@@ -1,7 +1,8 @@
 import express from "express";
 import customerRoutes from './routes/customerRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
-import connection from "./database/db.js";
+import connection from "./database/databaseConfig.js";
+
 const app = express();
 app.use(express.json())
 const PORT = 3001
@@ -21,10 +22,10 @@ connection.connect((err) => {
     }
 })
 
-// customer queries
+// customer routes
 app.use("/customers", customerRoutes);
 
-// customer queries
+// order routes
 app.use("/orders", orderRoutes);
 
 app.listen(PORT, () => {

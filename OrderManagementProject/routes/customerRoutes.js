@@ -1,9 +1,9 @@
 import express from "express"
 import newCustomer from '../controllers/customerControllers.js'
-import { validateCustomer  } from "../middlewares/validate.js";
+import * as validate from "../middlewares/validate.js";
 
 const route = express.Router()
 
-route.post("/", validateCustomer , newCustomer );
+route.post("/", validate.validateCustomer , newCustomer );
 
 export default route;

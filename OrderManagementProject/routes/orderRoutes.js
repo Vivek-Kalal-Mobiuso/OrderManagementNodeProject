@@ -1,8 +1,8 @@
 import express from "express"
-import placeOrder from '../controllers/placeOrders.js'
-
+// import placeOrder from '../controllers/orderControllers.js'
+import * as orderController from '../controllers/orderControllers.js'
 const route = express.Router()
 
-route.post("/", placeOrder );
+route.post("/", orderController.placeOrder );
 
 export default route;
