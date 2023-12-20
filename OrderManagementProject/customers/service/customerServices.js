@@ -69,7 +69,7 @@ export const getCustomerByIdService = (customerId) => {
                 if (error) {
                     return reject({ message: "Query Error", status: 501 })
                 }
-                resolve({ message: `${result.length === 0 ? "No Customer Found..." : "Customer Found"}`, result: result })
+                resolve({ message: `${result.length === 0 ? "Customer Does not Exists..." : "Customer Found"}`, result: result })
             })
         } catch (error) {
             reject({ message: error.message, status: 500 })
@@ -89,6 +89,59 @@ export const getAllCustomersService = () => {
             })
         } catch (error) {
             return reject({ message: error.message })
+        }
+    })
+}
+
+export const deleteCustomerByIdService = (customerId) => {
+    return new Promise((resolve,reject)=>{
+        try {
+            const deleteCustomerQuery = `DELETE FROM ONLINE_CUSTOMER WHERE CUSTOMER_ID=${customerId}`
+
+            connection.query(deleteCustomerQuery, (error, result) => {
+                if( error ){
+                    return reject({message : "Query error...", status : 501})
+                }
+
+                resolve({message : "Customer Deleted Successfully" , result})
+            })
+        } catch (error) {
+            return reject({message : "Internal Server Error..."})            
+        }
+    })
+}
+
+export const updateCustomerByIdService = (customerId) => {
+    return new Promise((resolve,reject)=>{
+        try {
+
+            // Get Customer Details first 
+            const updateCustomerQuery = `UPDATE ONLINE_CUSTOMER SET CUSTOMER_FNAME = ? , CUSTOMER_LNAME = ? , 
+                                                                CUSTOMER_EMAIL = ? ,                                                    
+                                                                CUSTOMER_PHONE = ? ,                                                    
+                                                            CUSTOMER_USERNAME = ? ,                                                    
+                                                            CUSTOMER_GENDER = ? ,
+                                                            ADDRESS_LINE_1 = ? ,
+                                                            ADDRESS_LINE_2 = ? ,
+                                                            CITY = ? ,
+                                                            STATE = ? ,
+                                                            PINCODE = ? ,
+                                                            COUNTRY = ? ,
+                                                            WHERE CUSTOMER_ID=${customerId}`
+
+            // update address table also using joins
+            
+            console.log(updateCustomerQuery);
+            // connection.query(updateCustomerQuery, (error, result) => {
+            //     if( error ){
+            //         return reject({message : "Query error...", status : 501})
+            //     }
+
+            //     resolve({message : "Customer Updated Successfully" , result})
+            // })
+            resolve({});
+        } catch (error) {
+            return reject({message : "Internal Server Error..."})            
         }
     })
 }

@@ -103,12 +103,47 @@ export const updateOrderHeaderService = (orderDetails) => {
 }
 
 export const updateOrderItemsService = (orderDetails) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         try {
+            const order = await getOrderByIdService(orderDetails.orderId);
 
-            const updateOrderItems = order 
+            // const updateOrderQuery = `UPDATE ORDER_ITEMS SET ORDER_STATUS = ? , PAYMENT_MODE = ? ,PAYMENT_DATE = ? ,ORDER_SHIPMENT_DATE = ? ,SHIPPER_ID = ? WHERE ORDER_ID=${orderDetails.orderId}`
+            // const values = [
+            //     (!orderDetails.orderStatus) ? order.result[0].ORDER_STATUS : orderDetails.orderStatus,
+            //     (!orderDetails.paymentMode) ? order.result[0].PAYMENT_MODE : orderDetails.paymentMode,
+            //     (!orderDetails.paymentDate) ? order.result[0].PAYMENT_MODE : orderDetails.paymentDate,
+            //     (!orderDetails.orderShipmentDate) ? order.result[0].ORDER_SHIPMENT_DATE : orderDetails.orderShipmentDate,
+            //     (!orderDetails.shipperId) ? order.result[0].SHIPPER_ID : orderDetails.shipperId,
+            // ]
+
+            connection.query(updateOrderQuery, values, (error, result) => {
+                if (error) {
+                    return reject({ message: "Query Error", status: 501 })
+                }
+                // resolve
+                return resolve({ message: "Order Updated Successfully", result })
+            })
+
         } catch (error) {
             return reject({ message: "Internal Server Error", status: 500 })
+        }
+    })
+}
+
+export const deleteOrderByIdService = (orderId) => {
+    return new Promise((resolve, reject) => {
+        try {
+            const deleteOrderQuery = `DELETE FROM ORDER_HEADER WHERE ORDER_ID=${orderId}`
+
+            connection.query(deleteOrderQuery, (error, result) => {
+                if( error ){
+                    return reject({message : "Query error...", status : 501})
+                }
+
+                resolve({message : "Order Deleted Successfully" , result})
+            })
+        } catch (error) {
+            return reject({message : "Internal Server Error"})
         }
     })
 }

@@ -20,7 +20,7 @@ export const getOrderByIdController = async (req,res) => {
 
         const orderDetails = await orderService.getOrderByIdService(orderId);
 
-        return res.status(200).send({message : orderDetails.message , result : orderDetails.result})
+        return res.status(200).send({message : orderDetails.message , result : orderDetails.result[0]})
     } catch (error) {
         res.status(error.status || 500).send({message : error.message || "Internal Server Error"});
     }
@@ -41,3 +41,14 @@ export const updateOrderController = async (req,res) => {
     }
 }
 
+export const deleteOrderByIdController = async (req,res) => {
+    try {
+        const orderId = req.params.id
+
+        const deletedOrder = await orderService.deleteOrderByIdService(orderId)
+        console.log(deletedOrder.result);
+        return res.status(200).send({message : deletedOrder.message })
+    } catch (error) {
+        res.status(error.status || 500).send({message : error.message || "Internal Server Error"})
+    }
+}

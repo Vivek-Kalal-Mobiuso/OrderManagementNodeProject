@@ -7,6 +7,8 @@ const route = express.Router()
 route.post("/", validate.validateCustomer , customerController.newCustomerController );
 route.get("/:id/orders", validate.isValidCustomer , customerController.getCustomerOrdersController );
 route.get("/:id", customerController.getCustomerByIdController );
-route.get("/", customerController.getAllCustomersController );
+route.delete("/:id", validate.isValidCustomer , customerController.deleteCustomerByIdController );
+route.put("/:id", validate.isValidCustomer , customerController.updateCustomerByIdController );
+route.get("/",  customerController.getAllCustomersController );
 
 export default route;
