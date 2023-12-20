@@ -1,13 +1,14 @@
+import dotenv from 'dotenv'
 import express from "express";
 import customerRoutes from './routes/customerRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
 import connection from "./database/databaseConfig.js";
 
+dotenv.config();
 const app = express();
-app.use(express.json())
 const PORT = 3001
 
-
+app.use(express.json())
 
 // Connect 
 connection.connect((err) => {
@@ -15,19 +16,15 @@ connection.connect((err) => {
         console.error("Error Connection database");
     } else {
         console.log("Database connected");
-        connection.query("SELECT * FROM online_customer", function (err, result, fields) {
-            if (err) throw err;
-            // console.log(result);
-        });
     }
 })
 
 // customer routes
-app.use("/customers", customerRoutes);
+app.use("/api/v1/customers", customerRoutes);
 
 // order routes
-app.use("/orders", orderRoutes);
+app.use("/api/v1/orders", orderRoutes);
 
-app.listen(PORT, () => {
-    console.log("server is running on port : ", PORT);
+app.listen(process.env.PORT || PORT, () => {
+    console.log("server is running on port : ", process.env.PORT || PORT);
 })
