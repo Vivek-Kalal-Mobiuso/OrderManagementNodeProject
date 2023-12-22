@@ -15,10 +15,7 @@ export const orderHeaderService = (orderDetails) => {
                                                                 CUSTOMER_ID,
                                                                 ORDER_DATE,
                                                                 ORDER_STATUS,
-                                                                PAYMENT_MODE,
-                                                                PAYMENT_DATE,
-                                                                ORDER_SHIPMENT_DATE,
-                    SHIPPER_ID) VALUES (${orderDetails.customerId} ,'${orderCreationDate}' ,'${orderDetails.orderStatus}' ,'${orderDetails.paymentMode}' ,${orderDetails.paymentDate} , ${orderDetails.orderShipmentDate} ,${orderDetails.shipperId} )`;
+                                                                PAYMENT_MODE) VALUES (${orderDetails.customerId} ,'${orderCreationDate}' ,'In Process' ,'${orderDetails.paymentMode}')`;
 
                 connection.query(orderHeaderQuery, (error, result) => {
 
@@ -136,14 +133,14 @@ export const deleteOrderByIdService = (orderId) => {
             const deleteOrderQuery = `DELETE FROM ORDER_HEADER WHERE ORDER_ID=${orderId}`
 
             connection.query(deleteOrderQuery, (error, result) => {
-                if( error ){
-                    return reject({message : "Query error...", status : 501})
+                if (error) {
+                    return reject({ message: "Query error...", status: 501 })
                 }
 
-                resolve({message : "Order Deleted Successfully" , result})
+                resolve({ message: "Order Deleted Successfully", result })
             })
         } catch (error) {
-            return reject({message : "Internal Server Error"})
+            return reject({ message: "Internal Server Error" })
         }
     })
 }

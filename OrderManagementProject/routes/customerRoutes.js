@@ -1,14 +1,52 @@
 import express from "express"
 import * as customerController from '../customers/controllers/customerControllers.js'
 import * as validate from "../middlewares/validate.js";
+import verifyToken from "../middlewares/auth.js";
+import {
+    checkSchema
+} from 'express-validator';
 
 const route = express.Router()
 
-route.post("/", validate.validateCustomer , customerController.newCustomerController );
-route.get("/:id/orders", validate.isValidCustomer , customerController.getCustomerOrdersController );
-route.get("/:id", customerController.getCustomerByIdController );
-route.delete("/:id", validate.isValidCustomer , customerController.deleteCustomerByIdController );
-route.put("/:id", validate.isValidCustomer , customerController.updateCustomerByIdController );
-route.get("/",  customerController.getAllCustomersController );
+// add
+route.post("/",
+    checkSchema(validate.registerCustomerValidationsSchema),
+    validate.validationError,
+    customerController.newCustomerController
+);
+
+route.post("/login",
+    checkSchema(validate.loginCustomerValidationsSchema),
+    validate.validationError,
+    customerController.loginCustomerController
+);
+// read
+route.get(
+    "/:customerId/orders",
+    verifyToken,
+    customerController.getCustomerOrdersController
+);
+route.get(
+    "/:customerId",
+    validate.isValidCustomer,
+    customerController.getCustomerByIdController
+);
+route.get(
+    "/",
+    customerController.getAllCustomersController
+);
+// delete
+route.delete(
+    "/:customerId",
+    verifyToken,
+    validate.isValidCustomer,
+    customerController.deleteCustomerByIdController);
+// update
+route.put(
+    "/:customerId",
+    verifyToken,
+    validate.isValidCustomer,
+    customerController.updateCustomerController
+);
 
 export default route;
