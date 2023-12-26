@@ -20,7 +20,7 @@ export const getOrderByIdController = async (req,res) => {
 
         const orderDetails = await orderService.getOrderByIdService(orderId);
 
-        return res.status(200).send({message : orderDetails.message , result : orderDetails.result[0]})
+        return res.status(200).send({message : orderDetails.message , order : orderDetails.result})
     } catch (error) {
         res.status(error.status || 500).send({message : error.message || "Internal Server Error"});
     }

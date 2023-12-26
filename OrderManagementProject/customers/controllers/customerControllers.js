@@ -16,10 +16,11 @@ export const newCustomerController = async (req, res) => {
 export const getCustomerOrdersController = async (req, res) => {
     try {
         const customerId = req.params.customerId;
+        if( !customerId ) return res.status(400).send({message : "Please Provide CustomerID!"})
 
         const customerOrders = await customerService.getAllOrdersService(customerId);
 
-        return res.status(200).send({ message: customerOrders.message, result: customerOrders.result });
+        return res.status(200).send({ message: customerOrders.message, orders: customerOrders.result });
     } catch (error) {
         return res.status(error.status || 500).send({ error: error.message || "Internal Server Error" });
     }
@@ -28,12 +29,13 @@ export const getCustomerOrdersController = async (req, res) => {
 export const getCustomerByIdController = async (req, res) => {
     try {
         const customerId = req.params.customerId
+        if( !customerId ) return res.status(400).send({message : "Please Provide CustomerID!"})
 
         const customer = await customerService.getCustomerByIdService(customerId);
 
         return res.status(200).send({ message: customer.message, customer: customer.result })
     } catch (error) {
-        res.status(error.status || 500).send({ error: error.message || "Internal Server Error" })
+        res.status(error.status || 500).send({ message: error.message || "Internal Server Error" })
     }
 }
 
@@ -50,6 +52,7 @@ export const getAllCustomersController = async (req, res) => {
 export const deleteCustomerByIdController = async (req, res) => {
     try {
         const customerId = req.params.customerId
+        if( !customerId ) return res.status(400).send({message : "Please Provide CustomerID!"})
 
         const deletedCustomer = await customerService.deleteCustomerByIdService(customerId)
 
@@ -62,6 +65,7 @@ export const deleteCustomerByIdController = async (req, res) => {
 export const updateCustomerController = async (req, res) => {
     try {
         const customerId = req.params.customerId
+        if( !customerId ) return res.status(400).send({message : "Please Provide CustomerID!"})
         const customerDetails = req.body
 
         const updatedCustomer = await customerService.updateCustomerService(customerId, customerDetails)

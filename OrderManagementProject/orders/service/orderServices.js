@@ -1,4 +1,5 @@
 import connection from "../../database/databaseConfig.js";
+import mapNewKeys from '../../reusable/mapping.js'
 
 export const orderHeaderService = (orderDetails) => {
     return new Promise((resolve, reject) => {
@@ -64,7 +65,23 @@ export const getOrderByIdService = (orderId) => {
                 if (error) {
                     return reject({ message: "Query Error Execution", status: 501 })
                 }
-                return resolve({ message: (result.length === 0) ? "Order Doesn't exist" : "Order Found.. :)", result: result })
+                if( result.length == 0 ) return reject({ message: "Order Not Found", status: 400 })
+
+                const newMapping = {
+                    "ORDER_ID": "orderId",
+                    "CUSTOMER_ID": "customerId",
+                    "ORDER_DATE": "orderDate",
+                    "ORDER_STATUS": "orderStatus",
+                    "PAYMENT_MODE": "paymentMode",
+                    "PAYMENT_DATE": "paymentDate",
+                    "ORDER_SHIPMENT_DATE": "orderShipmentDate",
+                    "SHIPPER_ID": "shipperId",
+                    "PRODUCT_ID": "productId",
+                    "PRODUCT_QUANTITY": "productQuantity"
+                }
+                const order = mapNewKeys(result[0], newMapping);
+                // return resolve({ message: (result.length === 0) ? "Order Doesn't exist" : "Order Found.. :)", result: order })
+                return resolve({ message: (result.length === 0) ? "Order Doesn't exist" : "Order Found.. :)", result: order })
             })
         } catch (error) {
             reject({ message: error.message, status: 500 })
@@ -90,6 +107,7 @@ export const updateOrderHeaderService = (orderDetails) => {
                 if (error) {
                     return reject({ message: "Query Error", status: 501 })
                 }
+                if( result.length == 0 ) return reject({ message: "Order Not Found", status: 400 })
                 // resolve
                 return resolve({ message: "Order Updated Successfully", result })
             })
@@ -136,6 +154,7 @@ export const deleteOrderByIdService = (orderId) => {
                 if (error) {
                     return reject({ message: "Query error...", status: 501 })
                 }
+                if( result.length == 0 ) return reject({ message: "Order Not Found", status: 400 })
 
                 resolve({ message: "Order Deleted Successfully", result })
             })

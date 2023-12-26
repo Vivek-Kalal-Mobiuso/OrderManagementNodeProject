@@ -109,7 +109,7 @@ export const registerCustomerValidationsSchema = {
         notEmpty: true,
         errorMessage: 'Enter Mobile Number',
         isLength: {
-            options: { min: 14, max: 14 },
+            options: { min: 10, max: 10 },
             errorMessage: 'Phone number must be 10 digits',
         },
         // isMobilePhone: {
@@ -121,7 +121,7 @@ export const registerCustomerValidationsSchema = {
         notEmpty: true,
         errorMessage: 'Password is required',
     },
-    AddressLine1: {
+    addressLine1: {
         notEmpty: true,
         errorMessage: "Address is Required"
     },

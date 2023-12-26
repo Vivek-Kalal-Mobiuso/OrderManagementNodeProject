@@ -28,24 +28,23 @@ route.get(
 );
 route.get(
     "/:customerId",
-    validate.isValidCustomer,
+    verifyToken,
     customerController.getCustomerByIdController
 );
 route.get(
     "/",
+    verifyToken,
     customerController.getAllCustomersController
 );
 // delete
 route.delete(
     "/:customerId",
     verifyToken,
-    validate.isValidCustomer,
     customerController.deleteCustomerByIdController);
 // update
 route.put(
     "/:customerId",
     verifyToken,
-    validate.isValidCustomer,
     customerController.updateCustomerController
 );
 
