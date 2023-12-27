@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
 
         token = token.split(" ")[1]
         const verified = jwt.verify(token, process.env.JWT_SECRET)
-
+        console.log(verified);
         req.user = verified;
         next();
     } catch (error) {

@@ -69,8 +69,7 @@ export const validateOrder = (req, res, next) => {
 
     if (!orderDetails.customerId ||
         !orderDetails.paymentMode ||
-        !orderDetails.productId ||
-        !orderDetails.productQuantity) {
+        !orderDetails.products) {
         return res.status(400).send({ message: "Incomplete Details... " })
     }
 
